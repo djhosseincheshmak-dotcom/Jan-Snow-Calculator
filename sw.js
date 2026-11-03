@@ -1,5 +1,5 @@
 
-const CACHE = 'jan-snow-v4';
+const CACHE = 'jan-snow-v5';
 
 const FILES = [
   './',
@@ -43,19 +43,16 @@ self.addEventListener('fetch', event => {
         .then(response => {
           if (response.ok) {
             const copy = response.clone();
-
             caches.open(CACHE).then(cache => {
               cache.put(event.request, copy);
             });
           }
-
           return response;
         })
         .catch(() => {
           if (event.request.mode === 'navigate') {
             return caches.match('./index.html');
           }
-
           return new Response('', {
             status: 503,
             statusText: 'Offline'
