@@ -1,4 +1,5 @@
-const CACHE = 'jan-snow-v3';
+
+const CACHE = 'jan-snow-v4';
 
 const FILES = [
   './',
