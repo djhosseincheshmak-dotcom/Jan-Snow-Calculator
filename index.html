@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
@@ -27,9 +26,7 @@
   --red: #ff7777;
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -39,10 +36,7 @@ body {
   padding: 18px 14px 40px;
 }
 
-main {
-  max-width: 680px;
-  margin: auto;
-}
+main { max-width: 680px; margin: auto; }
 
 .brand {
   display: flex;
@@ -63,16 +57,8 @@ main {
   background: #102017;
 }
 
-.brand h1 {
-  font-size: 21px;
-  margin: 0;
-}
-
-.brand p {
-  margin: 5px 0 0;
-  color: var(--muted);
-  font-size: 11px;
-}
+.brand h1 { font-size: 21px; margin: 0; }
+.brand p { margin: 5px 0 0; color: var(--muted); font-size: 11px; }
 
 #offlineStatus {
   font-size: 11px;
@@ -102,9 +88,7 @@ main {
   gap: 11px;
 }
 
-.three {
-  grid-template-columns: repeat(3,minmax(0,1fr));
-}
+.three { grid-template-columns: repeat(3,minmax(0,1fr)); }
 
 label {
   display: block;
@@ -124,12 +108,9 @@ input {
   min-width: 0;
 }
 
-.switch {
-  display: flex;
-  gap: 8px;
-}
+.switch { display: flex; gap: 8px; }
 
-.switch button,.btn {
+.switch button, .btn {
   border: 1px solid var(--line);
   background: #0a150f;
   color: white;
@@ -140,7 +121,7 @@ input {
   cursor: pointer;
 }
 
-.switch button.active,.primary {
+.switch button.active, .primary {
   background: var(--green) !important;
   color: #081108 !important;
   border-color: var(--green) !important;
@@ -181,28 +162,17 @@ table {
   font-size: 12px;
 }
 
-th,td {
+th, td {
   padding: 10px 5px;
   border-bottom: 1px solid var(--line);
   text-align: center;
 }
 
-th {
-  color: var(--muted);
-  font-weight: normal;
-}
+th { color: var(--muted); font-weight: normal; }
+td { direction: ltr; }
 
-td {
-  direction: ltr;
-}
-
-.good {
-  color: var(--green);
-}
-
-.bad {
-  color: var(--red);
-}
+.good { color: var(--green); }
+.bad { color: var(--red); }
 
 .note {
   color: var(--muted);
@@ -210,7 +180,7 @@ td {
   line-height: 1.9;
 }
 
-.warning,.ok {
+.warning, .ok {
   padding: 10px;
   border-radius: 10px;
   font-size: 12px;
@@ -218,15 +188,8 @@ td {
   margin-top: 10px;
 }
 
-.warning {
-  background: #332b12;
-  color: #ffe39a;
-}
-
-.ok {
-  background: #142719;
-  color: var(--green);
-}
+.warning { background: #332b12; color: #ffe39a; }
+.ok { background: #142719; color: var(--green); }
 
 .row {
   display: flex;
@@ -236,14 +199,9 @@ td {
   font-size: 13px;
 }
 
-.row span {
-  color: var(--muted);
-}
+.row span { color: var(--muted); }
 
-.full {
-  width: 100%;
-  margin-top: 10px;
-}
+.full { width: 100%; margin-top: 10px; }
 
 .footer {
   text-align: center;
@@ -252,17 +210,11 @@ td {
   margin: 20px 0;
 }
 
-.table-wrap {
-  overflow-x: auto;
-}
+.table-wrap { overflow-x: auto; }
 
 @media(max-width:380px) {
-  .three {
-    grid-template-columns: 1fr 1fr;
-  }
-  .metric strong {
-    font-size: 16px;
-  }
+  .three { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .metric strong { font-size: 16px; }
 }
 </style>
 </head>
@@ -352,11 +304,15 @@ td {
     </div>
   </div>
 
-  <p class="note">مجموع درصد خروج‌ها باید دقیقاً ۱۰۰٪ باشد. نسبت R فاصله تارگت را نسبت به فاصله ورود تا استاپ مشخص می‌کند.</p>
+  <p class="note">
+    مجموع درصد خروج‌ها باید دقیقاً ۱۰۰٪ باشد.
+    نسبت R فاصله تارگت را نسبت به فاصله ورود تا استاپ مشخص می‌کند.
+  </p>
 </section>
 
 <section class="card">
   <div class="section">۴. هزینه‌های معامله</div>
+
   <div class="grid">
     <div>
       <label>کارمزد هر سمت (%)</label>
@@ -367,11 +323,16 @@ td {
       <input id="funding" type="number" value="0" step="any">
     </div>
   </div>
-  <p class="note">کارمزد به‌صورت جداگانه برای ورود و خروج محاسبه می‌شود. فاندینگ مثبت به‌عنوان هزینه در نظر گرفته شده است.</p>
+
+  <p class="note">
+    کارمزد ورود و خروج جداگانه محاسبه می‌شود.
+    فاندینگ مثبت به‌عنوان هزینه در نظر گرفته شده است.
+  </p>
 </section>
 
 <section class="card">
   <div class="section">۵. مشخصات پوزیشن</div>
+
   <div class="metrics">
     <div class="metric">
       <small>ارزش اسمی پوزیشن</small>
@@ -398,11 +359,13 @@ td {
       <strong id="stopLoss" class="bad">-</strong>
     </div>
   </div>
+
   <div id="status"></div>
 </section>
 
 <section class="card">
   <div class="section">۶. سود و زیان تارگت‌ها</div>
+
   <div class="table-wrap">
     <table>
       <thead>
@@ -445,12 +408,23 @@ td {
     <strong id="returnPct">-</strong>
   </div>
 
-  <button id="reset" class="btn primary full" type="button">بازنشانی مقادیر اولیه</button>
+  <div class="grid">
+    <button id="calculate" class="btn primary full" type="button">
+      محاسبه
+    </button>
+    <button id="reset" class="btn full" type="button">
+      بازنشانی
+    </button>
+  </div>
+
+  <p class="note">
+    محاسبه با تغییر ورودی‌ها به‌صورت خودکار انجام می‌شود.
+    دکمه محاسبه نیز بدون تغییر دادن اعداد، محاسبه را دوباره اجرا می‌کند.
+  </p>
 </section>
 
 <div class="footer">
-  JAN SNOW • FUTURES RISK MANAGEMENT
-  <br>
+  JAN SNOW • FUTURES RISK MANAGEMENT<br>
   Always verify margin, liquidation price and exchange fees.
 </div>
 
@@ -472,7 +446,7 @@ td {
   }
 
   if (!window.isSecureContext) {
-    show('برای نصب آفلاین باید از اتصال امن HTTPS استفاده شود.');
+    show('برای نصب آفلاین باید از HTTPS استفاده شود.');
     return;
   }
 
@@ -489,15 +463,15 @@ td {
             if (worker.state === 'activated') {
               show('JAN SNOW آماده استفاده آفلاین است.');
             } else if (worker.state === 'redundant') {
-              show('نصب آفلاین ناموفق بود؛ فایل‌های برنامه را بررسی کن.');
+              show('نصب آفلاین ناموفق بود؛ فایل‌ها را بررسی کن.');
             }
           });
         }
       }
     })
     .catch(function(error) {
-      show('خطا در فعال‌سازی حالت آفلاین: ' + error.message);
-      console.error('Service Worker error:', error);
+      show('خطا در فعال‌سازی آفلاین: ' + error.message);
+      console.error(error);
     });
 })();
 </script>
