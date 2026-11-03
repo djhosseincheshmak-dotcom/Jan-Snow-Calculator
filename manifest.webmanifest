@@ -1,22 +1,22 @@
+
 {
-  "id": "./",
   "name": "JAN SNOW Futures Calculator",
   "short_name": "JAN SNOW",
+  "description": "JAN SNOW Futures Trading Calculator",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#07110d",
-  "theme_color": "#07110d",
-  "lang": "fa",
-  "dir": "rtl",
+  "orientation": "portrait",
+  "background_color": "#07130f",
+  "theme_color": "#07130f",
   "icons": [
     {
-      "src": "icons/icon-192.png",
+      "src": "./icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "icons/icon-512.png",
+      "src": "./icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
