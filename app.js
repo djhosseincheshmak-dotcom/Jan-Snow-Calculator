@@ -16,8 +16,8 @@
     entry: 2278,
     stop: 2220,
     r1: 1,
-    r2: 1.5,
-    r3: 2,
+    r2: 2,
+    r3: 3,
     f1: 50,
     f2: 30,
     f3: 20,
@@ -27,13 +27,41 @@
 
   let direction = 'LONG';
 
-  // English interface
   document.documentElement.lang = 'en';
   document.documentElement.dir = 'ltr';
   document.body.dir = 'ltr';
 
   const translations = {
-    'در حال بررسی وضعیت برنامه...': 'Checking app status...',
+    'موجودی حساب (USDT)': 'Account Balance (USDT)',
+    'مارجین اختصاصی از حساب (%)': 'Required Margin (%) - AUTO',
+    'ریسک مجاز از حساب (%)': 'Account Risk (%)',
+    'اهرم (Leverage)': 'Leverage (x)',
+    'LONG خرید': 'LONG',
+    'SHORT فروش': 'SHORT',
+    'قیمت ورود (Entry)': 'Entry Price',
+    'حد ضرر (Stop Loss)': 'Stop Loss Price',
+    'تارگت اول (R)': 'TP1 Multiplier (R)',
+    'تارگت دوم (R)': 'TP2 Multiplier (R)',
+    'تارگت سوم (R)': 'TP3 Multiplier (R)',
+    'خروج اول (%)': 'TP1 Exit (%)',
+    'خروج دوم (%)': 'TP2 Exit (%)',
+    'خروج سوم (%)': 'TP3 Exit (%)',
+    'کارمزد هر سمت (%)': 'Fee Per Side (%)',
+    'مجموع فاندینگ (USDT)': 'Total Funding Cost (USDT)',
+    'ارزش اسمی پوزیشن': 'Position Notional',
+    'مارجین موردنیاز': 'Required Margin',
+    'تعداد / حجم دارایی': 'Position Quantity',
+    'اهرم مؤثر': 'Effective Leverage',
+    'بودجه ریسک حساب': 'Account Risk Budget',
+    'زیان تخمینی در استاپ': 'Estimated Stop Loss',
+    'سود ناخالص کل': 'Total Gross Profit',
+    'مجموع کارمزد': 'Total Fees',
+    'مجموع فاندینگ': 'Total Funding',
+    'سود خالص نهایی': 'Final Net Profit',
+    'بازده نسبت به موجودی حساب': 'Account Return',
+    'در انتظار محاسبه...': 'Waiting for calculation...',
+    'محاسبه': 'CALCULATE',
+    'بازنشانی': 'RESET DEFAULTS',
     '۱. مشخصات حساب و ریسک': '1. ACCOUNT & RISK SETTINGS',
     '۲. جهت معامله و قیمت‌ها': '2. TRADE DIRECTION & PRICES',
     '۳. تارگت‌ها و تقسیم خروج': '3. TARGETS & PARTIAL EXITS',
@@ -41,76 +69,9 @@
     '۵. مشخصات پوزیشن': '5. POSITION DETAILS',
     '۶. سود و زیان تارگت‌ها': '6. TARGET PROFIT & LOSS',
     '۷. جمع‌بندی نهایی': '7. FINAL SUMMARY',
-
-    'موجودی حساب (USDT)': 'Account Balance (USDT)',
-    'مارجین اختصاصی از حساب (%)': 'Required Margin (%) - AUTO',
-    'ریسک مجاز از حساب (%)': 'Account Risk (%)',
-    'اهرم (Leverage)': 'Leverage (x)',
-
-    'LONG خرید': 'LONG',
-    'SHORT فروش': 'SHORT',
-
-    'قیمت ورود (Entry)': 'Entry Price',
-    'حد ضرر (Stop Loss)': 'Stop Loss Price',
-
-    'تارگت اول (R)': 'TP1 Multiplier (R)',
-    'تارگت دوم (R)': 'TP2 Multiplier (R)',
-    'تارگت سوم (R)': 'TP3 Multiplier (R)',
-
-    'خروج اول (%)': 'TP1 Exit (%)',
-    'خروج دوم (%)': 'TP2 Exit (%)',
-    'خروج سوم (%)': 'TP3 Exit (%)',
-
-    'مجموع درصد خروج‌ها باید دقیقاً ۱۰۰٪ باشد.':
-      'Total partial exits must equal exactly 100%.',
-    'نسبت R فاصله تارگت را نسبت به فاصله ورود تا استاپ مشخص می‌کند.':
-      'R defines target distance relative to the entry-to-stop distance.',
-
-    'کارمزد هر سمت (%)': 'Fee Per Side (%)',
-    'مجموع فاندینگ (USDT)': 'Total Funding Cost (USDT)',
-    'کارمزد ورود و خروج جداگانه محاسبه می‌شود.':
-      'Entry and exit fees are calculated separately.',
-    'فاندینگ مثبت به‌عنوان هزینه در نظر گرفته شده است.':
-      'Positive funding is treated as a cost.',
-
-    'ارزش اسمی پوزیشن': 'Position Notional',
-    'مارجین موردنیاز': 'Required Margin',
-    'تعداد / حجم دارایی': 'Position Quantity',
-    'اهرم مؤثر': 'Effective Leverage',
-    'بودجه ریسک حساب': 'Account Risk Budget',
-    'زیان تخمینی در استاپ': 'Estimated Stop Loss',
-
-    'تارگت': 'TARGET',
-    'قیمت': 'PRICE',
-    'درصد خروج': 'EXIT (%)',
-    'سود خالص': 'NET PROFIT',
-    'سود تجمعی': 'CUMULATIVE PROFIT',
-    'در انتظار محاسبه...': 'Waiting for calculation...',
-
-    'سود ناخالص کل': 'Total Gross Profit',
-    'مجموع کارمزد': 'Total Fees',
-    'مجموع فاندینگ': 'Total Funding',
-    'سود خالص نهایی': 'Final Net Profit',
-    'بازده نسبت به موجودی حساب': 'Account Return',
-
-    'محاسبه': 'CALCULATE',
-    'بازنشانی': 'RESET DEFAULTS',
-
-    'محاسبه با تغییر ورودی‌ها به‌صورت خودکار انجام می‌شود.':
-      'Calculations update automatically when inputs change.',
-    'دکمه محاسبه نیز بدون تغییر دادن اعداد، محاسبه را دوباره اجرا می‌کند.':
-      'Use Calculate to run the calculation again.',
-
-    'JAN SNOW آماده استفاده آفلاین است.':
-      'JAN SNOW is ready for offline use.',
-    'برنامه ثبت شد؛ در حال آماده‌سازی حالت آفلاین...':
-      'App registered. Preparing offline mode...',
-    'مرورگر از نصب آفلاین پشتیبانی نمی‌کند.':
-      'This browser does not support offline installation.',
-    'برای نصب آفلاین باید از HTTPS استفاده شود.':
-      'HTTPS is required for offline installation.',
-    'نصب آفلاین ناموفق بود؛ فایل‌ها را بررسی کن.':
-      'Offline installation failed. Check app files.'
+    'در حال بررسی وضعیت برنامه...': 'Checking app status...',
+    'JAN SNOW آماده استفاده آفلاین است.': 'JAN SNOW is ready for offline use.',
+    'برنامه ثبت شد؛ در حال آماده‌سازی حالت آفلاین...': 'App registered. Preparing offline mode...'
   };
 
   const digitMap = {
@@ -120,7 +81,7 @@
     '٥':'5','٦':'6','٧':'7','٨':'8','٩':'9'
   };
 
-  function toEnglishDigits(value) {
+  function englishDigits(value) {
     return String(value).replace(/[۰-۹٠-٩]/g, d => digitMap[d]);
   }
 
@@ -141,7 +102,7 @@
         );
       }
 
-      node.nodeValue = toEnglishDigits(node.nodeValue);
+      node.nodeValue = englishDigits(node.nodeValue);
     }
 
     document.querySelectorAll('input').forEach(input => {
@@ -153,9 +114,7 @@
 
   translatePage();
 
-  // Translate offline status when the service worker updates it.
   const offlineStatus = $('offlineStatus');
-
   if (offlineStatus) {
     new MutationObserver(translatePage).observe(offlineStatus, {
       childList: true,
@@ -164,7 +123,6 @@
     });
   }
 
-  // Auto-calculated margin field.
   const marginInput = $('marginPct');
 
   if (marginInput) {
@@ -172,27 +130,25 @@
     marginInput.value = '';
     marginInput.lang = 'en-US';
     marginInput.dir = 'ltr';
-    marginInput.style.textAlign = 'left';
 
     const label = marginInput.parentElement.querySelector('label');
     if (label) label.textContent = 'Required Margin (%) - AUTO';
   }
 
   function number(id) {
-    const value = toEnglishDigits($(id).value.trim());
+    const value = englishDigits($(id).value.trim());
     return value === '' ? NaN : Number(value);
   }
 
   function fmt(value, decimals = 2) {
     return Number(value).toLocaleString('en-US', {
       minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-      useGrouping: true
+      maximumFractionDigits: decimals
     });
   }
 
   function put(id, value) {
-    $(id).textContent = value;
+    if ($(id)) $(id).textContent = value;
   }
 
   function showError(message) {
@@ -200,20 +156,32 @@
       `<div class="warning">${message}</div>`;
   }
 
+  // Ensure Calculate button exists.
+  let calculateButton = $('calculate');
+
+  if (!calculateButton) {
+    calculateButton = document.createElement('button');
+    calculateButton.id = 'calculate';
+    calculateButton.type = 'button';
+    calculateButton.textContent = 'CALCULATE';
+    $('reset').parentElement.insertBefore(
+      calculateButton,
+      $('reset')
+    );
+  }
+
   function calculate() {
     const v = Object.fromEntries(
       inputIds.map(id => [id, number(id)])
     );
 
-    const {
-      balance: b,
-      riskPct: risk,
-      leverage: lev,
-      entry: e,
-      stop: s,
-      fee: feePct,
-      funding
-    } = v;
+    const b = v.balance;
+    const risk = v.riskPct;
+    const lev = v.leverage;
+    const e = v.entry;
+    const s = v.stop;
+    const feePct = v.fee;
+    const funding = v.funding;
 
     const targetsR = [v.r1, v.r2, v.r3];
     const fractions = [v.f1, v.f2, v.f3].map(x => x / 100);
@@ -246,21 +214,14 @@
 
     const riskBudget = b * risk / 100;
     const feeRate = feePct / 100;
-
-    // Estimated loss per unit of notional at stop.
-    const lossRate =
-      distance / e + feeRate * (1 + s / e);
-
+    const lossRate = distance / e + feeRate * (1 + s / e);
     const availableRisk = riskBudget - funding;
 
     if (availableRisk <= 0 || lossRate <= 0) {
-      showError(
-        'Funding cost is greater than or equal to the risk budget.'
-      );
+      showError('Funding cost is greater than or equal to the risk budget.');
       return;
     }
 
-    // Position sizing based on account risk.
     const notional = availableRisk / lossRate;
     const quantity = notional / e;
     const usedMargin = notional / lev;
@@ -271,7 +232,6 @@
       marginInput.value = fmt(marginPct, 4);
     }
 
-    // Target prices use exact R multipliers.
     const prices = targetsR.map(r =>
       direction === 'LONG'
         ? e + distance * r
@@ -316,13 +276,9 @@
     }).join('');
 
     const grossTotal = gross.reduce((a, c) => a + c, 0);
-    const feesTotal =
-      entryFee + exitFees.reduce((a, c) => a + c, 0);
+    const feesTotal = entryFee + exitFees.reduce((a, c) => a + c, 0);
     const netTotal = net.reduce((a, c) => a + c, 0);
-
-    const stopFees =
-      entryFee + notional * (s / e) * feeRate + funding;
-
+    const stopFees = entryFee + notional * (s / e) * feeRate + funding;
     const stopLoss = priceRisk + stopFees;
 
     put('notional', '$' + fmt(notional));
@@ -334,27 +290,22 @@
     put('grossTotal', '$' + fmt(grossTotal));
     put('feesTotal', '$' + fmt(feesTotal));
     put('fundTotal', '$' + fmt(funding));
-
-    put(
-      'netTotal',
-      (netTotal >= 0 ? '+$' : '-$') + fmt(Math.abs(netTotal))
-    );
-
+    put('netTotal', (netTotal >= 0 ? '+$' : '-$') + fmt(Math.abs(netTotal)));
     put('returnPct', fmt(netTotal / b * 100) + '%');
 
     $('status').innerHTML =
       '<div class="ok">Calculation successful. Position size is adjusted to the selected account risk.</div>';
   }
 
-  // Automatic calculation.
+  // Auto calculation on every input change.
   inputIds.forEach(id => {
     $(id).addEventListener('input', calculate);
   });
 
   // Manual calculation.
-  $('calculate').addEventListener('click', calculate);
+  calculateButton.addEventListener('click', calculate);
 
-  // LONG / SHORT.
+  // LONG / SHORT buttons.
   $('long').addEventListener('click', () => {
     direction = 'LONG';
     $('long').classList.add('active');
@@ -369,7 +320,7 @@
     calculate();
   });
 
-  // Reset to defaults.
+  // Reset to the agreed defaults.
   $('reset').addEventListener('click', () => {
     inputIds.forEach(id => {
       $(id).value = defaults[id];
