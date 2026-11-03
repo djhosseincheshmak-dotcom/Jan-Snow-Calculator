@@ -8,16 +8,39 @@
   ];
 
   const defaults = {
-    balance: 1000, marginPct: 8.5, riskPct: 1,
-    leverage: 100, entry: 2278, stop: 2220,
-    r1: 1, r2: 1.5, r3: 2,
-    f1: 50, f2: 30, f3: 20,
-    fee: 0.05, funding: 0
+    balance: 1000,
+    marginPct: '',
+    riskPct: 1,
+    leverage: '',
+    entry: '',
+    stop: '',
+    r1: 1,
+    r2: 1.5,
+    r3: 2,
+    f1: 50,
+    f2: 30,
+    f3: 20,
+    fee: 0.05,
+    funding: 0
   };
 
   let direction = 'LONG';
 
-  const number = id => Number($(id).value);
+  // درصد مارجین فقط محاسبه می‌شود و دستی قابل تغییر نیست
+  $('marginPct').readOnly = true;
+  $('marginPct').placeholder = 'محاسبه خودکار';
+
+  const marginLabel = $('marginPct').parentElement.querySelector('label');
+  if (marginLabel) {
+    marginLabel.textContent = 'درصد مارجین موردنیاز (خودکار)';
+  }
+
+  $('marginPct').value = '';
+
+  const number = id => {
+    const value = $(id).value.trim();
+    return value === '' ? 0 : Number(value);
+  };
 
   const fmt = value => Number(value).toLocaleString('en-US', {
     minimumFractionDigits: 2,
@@ -32,21 +55,31 @@
     const v = Object.fromEntries(ids.map(id => [id, number(id)]));
 
     const {
-      balance: b, marginPct: m, riskPct: r,
-      leverage: lev, entry: e, stop: s,
-      fee: feePct, funding: funding
+      balance: b,
+      riskPct: r,
+      leverage: lev,
+      entry: e,
+      stop: s,
+      fee: feePct,
+      funding
     } = v;
 
     const fractions = [v.f1, v.f2, v.f3].map(x => x / 100);
     const targetsR = [v.r1, v.r2, v.r3];
     const distance = Math.abs(e - s);
 
+    const required = [
+      'balance', 'riskPct', 'leverage',
+      'entry', 'stop', 'r1', 'r2', 'r3',
+      'f1', 'f2', 'f3'
+    ];
+
     const valid =
-      ids.every(id =>
+      required.every(id =>
         $(id).value.trim() !== '' &&
-        Number.isFinite(v[id])
+        Number.isFinite(number(id))
       ) &&
-      b > 0 && m > 0 && r > 0 && lev > 0 &&
+      b > 0 && r > 0 && lev > 0 &&
       e > 0 && s > 0 && e !== s &&
       (direction === 'LONG' ? s < e : s > e) &&
       targetsR.every(x => x > 0) &&
@@ -55,22 +88,36 @@
       feePct >= 0 && funding >= 0;
 
     if (!valid) {
+      $('marginPct').value = '';
       $('status').innerHTML =
-        '<div class="warning">ورودی‌ها را بررسی کن. استاپ باید در جهت درست باشد و مجموع درصد خروج‌ها دقیقاً ۱۰۰٪ شود.</div>';
+        '<div class="warning">اهرم، ورود و استاپ را وارد کن. استاپ باید در جهت درست باشد و مجموع خروج‌ها دقیقاً ۱۰۰٪ شود.</div>';
       return;
     }
 
     const riskBudget = b * r / 100;
-    const marginBudget = b * m / 100;
+    const feeRate = feePct / 100;
 
-    const riskNotional = riskBudget * e / distance;
-    const marginNotional = marginBudget * lev;
-    const notional = Math.min(riskNotional, marginNotional);
+    // زیان هر واحد ارزش اسمی، شامل حرکت قیمت و کارمزد دو سمت
+    const lossRate =
+      distance / e +
+      feeRate * (1 + s / e);
 
+    // حجم پوزیشن طوری تعیین می‌شود که زیان تخمینی از بودجه ریسک بیشتر نشود
+    const availableRisk = riskBudget - funding;
+
+    if (availableRisk <= 0 || lossRate <= 0) {
+      $('status').innerHTML =
+        '<div class="warning">هزینه فاندینگ از بودجه ریسک بیشتر یا مساوی آن است. ورودی فاندینگ را بررسی کن.</div>';
+      return;
+    }
+
+    const notional = availableRisk / lossRate;
     const quantity = notional / e;
     const usedMargin = notional / lev;
+    const marginPct = usedMargin / b * 100;
     const priceRisk = notional * distance / e;
-    const feeRate = feePct / 100;
+
+    $('marginPct').value = fmt(marginPct);
 
     const prices = targetsR.map(x =>
       direction === 'LONG'
@@ -89,7 +136,10 @@
     );
 
     const net = gross.map((profit, i) =>
-      profit - entryFee * fractions[i] - exitFees[i] - funding * fractions[i]
+      profit -
+      entryFee * fractions[i] -
+      exitFees[i] -
+      funding * fractions[i]
     );
 
     let cumulative = 0;
@@ -102,8 +152,12 @@
           <td>TP${i + 1}</td>
           <td>${fmt(prices[i])}</td>
           <td>${fmt(fractions[i] * 100)}%</td>
-          <td class="${profit >= 0 ? 'good' : 'bad'}">${profit >= 0 ? '+' : ''}$${fmt(profit)}</td>
-          <td class="${cumulative >= 0 ? 'good' : 'bad'}">${cumulative >= 0 ? '+' : ''}$${fmt(cumulative)}</td>
+          <td class="${profit >= 0 ? 'good' : 'bad'}">
+            ${profit >= 0 ? '+' : '-'}$${fmt(Math.abs(profit))}
+          </td>
+          <td class="${cumulative >= 0 ? 'good' : 'bad'}">
+            ${cumulative >= 0 ? '+' : '-'}$${fmt(Math.abs(cumulative))}
+          </td>
         </tr>
       `;
     }).join('');
@@ -111,14 +165,15 @@
     const grossTotal = gross.reduce((a, c) => a + c, 0);
     const feesTotal = entryFee + exitFees.reduce((a, c) => a + c, 0);
     const netTotal = net.reduce((a, c) => a + c, 0);
-    const stopFees = entryFee + notional * (s / e) * feeRate + funding;
+    const stopLoss = priceRisk + feesTotal * 0 +
+      entryFee + notional * (s / e) * feeRate + funding;
 
     put('notional', '$' + fmt(notional));
     put('usedMargin', '$' + fmt(usedMargin));
     put('quantity', fmt(quantity));
     put('effectiveLev', fmt(notional / usedMargin) + 'x');
     put('riskBudget', '$' + fmt(riskBudget));
-    put('stopLoss', '-$' + fmt(priceRisk + stopFees));
+    put('stopLoss', '-$' + fmt(stopLoss));
 
     put('grossTotal', '$' + fmt(grossTotal));
     put('feesTotal', '$' + fmt(feesTotal));
@@ -127,20 +182,15 @@
     put('returnPct', fmt(netTotal / b * 100) + '%');
 
     $('status').innerHTML =
-      riskNotional > marginNotional
-        ? '<div class="warning">محدودیت مارجین فعال است؛ حجم کاهش یافته است. فاصله لیکوییدیشن را در صرافی بررسی کن.</div>'
-        : '<div class="ok">محاسبه موفق بود؛ حجم بر اساس سقف ریسک تعیین شده است.</div>';
+      '<div class="ok">حجم پوزیشن بر اساس ریسک ۱٪ و با احتساب کارمزد دو سمت محاسبه شد. مارجین به‌صورت خودکار تعیین شده است.</div>';
   }
 
-  // محاسبه خودکار با تغییر ورودی‌ها
   ids.forEach(id => {
     $(id).addEventListener('input', calculate);
   });
 
-  // دکمه محاسبه مستقل
   $('calculate').addEventListener('click', calculate);
 
-  // تغییر جهت معامله
   $('long').addEventListener('click', () => {
     direction = 'LONG';
     $('long').classList.add('active');
@@ -155,7 +205,6 @@
     calculate();
   });
 
-  // فقط دکمه بازنشانی مقادیر اولیه را برمی‌گرداند
   $('reset').addEventListener('click', () => {
     ids.forEach(id => {
       $(id).value = defaults[id];
